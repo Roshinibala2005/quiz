@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz</title>
+    <style>
+      body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+#quiz {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  border: 1px solid #ccc;
+}
+
+#question {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+#choices {
+  margin-bottom: 1rem;
+}
+
+input[type="radio"] {
+  margin-right: 0.5rem;
+}
+
+#submit {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#result {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+#score {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+    </style>
+  </head>
+  <body>
+    <h1>Quiz</h1>
+    <div id="quiz">
+      <div id="question"></div>
+      <div id="choices"></div>
+      <div id="submit">
+        <button onclick="checkAnswer()">Submit Answer</button>
+      </div>
+      <div id="result"></div>
+      <div id="score"></div>
+    </div>
+    <script>
+      const quiz = [
+        {
+          question: "What is the capital of France?",
+          choices: ["Paris", "London", "Berlin", "Madrid"],
+          answer: "Paris",
+        },
+        {
+          question: "What is the largest planet in our solar system?",
+          choices: ["Mars", "Jupiter", "Venus", "Saturn"],
+          answer: "Jupiter",
+        },
+        {
+          question: "What is the smallest country in the world?",
+          choices: ["Monaco", "Vatican City", "Nauru", "Tuvalu"],
+          answer: "Vatican City",
+        },
+      ];
+
+      let currentQuestion = 0;
+      let score = 0;
+
+      function displayQuestion() {
+        document.getElementById("question").innerHTML =
+          quiz[currentQuestion].question;
+        let choices = quiz[currentQuestion].choices;
+        let choiceHtml = "";
+        for (let i = 0; i < choices.length; i++) {
+          choiceHtml +=
+            '<input type="radio" name="choice" value="' +
+            choices[i] +
+            '">' +
+            choices[i] +
+            "<br>";
+        }
+        document.getElementById("choices").innerHTML = choiceHtml;
+      }
+
+      function checkAnswer() {
+        let userAnswer = document.querySelector(
+          'input[name="choice"]:checked'
+        );
+        if (!userAnswer) {
+          alert("Please select an answer.");
+          return;
+        }
+        let answer = userAnswer.value;
+        if (answer == quiz[currentQuestion].answer) {
+          score++;
+          document.getElementById("result").innerHTML = "Correct!";
+          document.getElementById("result").style.color = "green";
+        } else {
+          document.getElementById("result").innerHTML = "Incorrect.";
+          document.getElementById("result").style.color = "red";
+        }
+        currentQuestion++;
+        if (currentQuestion == quiz.length) {
+          document.getElementById("submit").style.display = "none";
+          document.getElementById("score").innerHTML =
+            "You scored " + score + " out of " + quiz.length + ".";
+        } else {
+          displayQuestion();
+        }
+      }
+
+      displayQuestion();
+    </script>
+  </body>
+</html>
